@@ -4,7 +4,6 @@ import {
   Heading,
   useColorMode,
   useColorModeValue,
-  VStack,
   useMediaQuery
 } from '@chakra-ui/react'
 import { WithChildren } from '../../@types/with-children'

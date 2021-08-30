@@ -1,5 +1,5 @@
-import { Box, Heading, HStack, Skeleton, Text, VStack } from '@chakra-ui/react'
-import React from 'react'
+import { Box, Heading, Skeleton, Text, VStack } from '@chakra-ui/react'
+import React, { useRef } from 'react'
 import { useEffect } from 'react'
 import { useCallback } from 'react'
 import { useState } from 'react'
@@ -30,6 +30,16 @@ const Home = () => {
   const [cep, setCep] = useState<string | null>(null)
   const [endereco, setEndereco] = useState<IEndereco | null>(null)
 
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  const focusField = useCallback(() => {
+    inputRef.current?.focus()
+  }, [inputRef])
+
+  useEffect(() => {
+    focusField()
+  }, [loading])
+
   const handleSearch = useCallback(async (cep: string) => {
     setLoading(true)
 
@@ -57,26 +67,29 @@ const Home = () => {
 
   return (
     <VStack spacing="2">
-      <FormBuscarEndereco setCep={setCep} isLoading={loading} />
+      <FormBuscarEndereco
+        setCep={setCep}
+        isLoading={loading}
+        focusField={focusField}
+        inputRef={inputRef}
+      />
 
       {cep && (
         <Box w="100%">
-          <Skeleton isLoaded={!loading} mb="2">
+          <Skeleton isLoaded={!loading} my="3">
             <Heading size="lg">{`CEP buscado: ${
               endereco?.cep ?? '...'
             }`}</Heading>
           </Skeleton>
 
           <Skeleton isLoaded={!loading}>
-            <HStack spacing="3">
-              <Text>{`${endereco?.localidade ?? '...'} - ${
-                endereco?.uf ?? '...'
-              }`}</Text>
+            <Text>{`${endereco?.localidade ?? '...'} - ${
+              endereco?.uf ?? '...'
+            }`}</Text>
 
-              <Text>{`${endereco?.logradouro ?? '...'} - ${
-                endereco?.bairro ?? '...'
-              }`}</Text>
-            </HStack>
+            <Text>{`${endereco?.logradouro ?? '...'} - ${
+              endereco?.bairro ?? '...'
+            }`}</Text>
           </Skeleton>
         </Box>
       )}

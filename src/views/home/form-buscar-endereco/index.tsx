@@ -1,36 +1,49 @@
-import { Input } from '@chakra-ui/react'
+import {
+  Input,
+  InputGroup,
+  InputLeftElement,
+  useColorModeValue
+} from '@chakra-ui/react'
 import React, {
   ChangeEvent,
   Dispatch,
+  RefObject,
   SetStateAction,
-  useCallback,
-  useRef
+  useCallback
 } from 'react'
-import { useEffect } from 'react'
 import { cepForceMask } from '../../../components/helpers/masks'
 import { debounce } from 'lodash'
+import { SearchIcon } from '@chakra-ui/icons'
 
 type DispatchSetState<T> = Dispatch<SetStateAction<T>>
 
 interface FormBuscarEnderecoProps {
   setCep: DispatchSetState<string | null>
   isLoading: boolean
+  focusField: () => void
+  inputRef: RefObject<HTMLInputElement>
 }
 
-const FormBuscarEndereco = ({ isLoading, setCep }: FormBuscarEnderecoProps) => {
-  const inputRef = useRef<HTMLInputElement>(null)
-
+const FormBuscarEndereco = ({
+  isLoading,
+  setCep,
+  focusField,
+  inputRef
+}: FormBuscarEnderecoProps) => {
   const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault()
 
     const { value: cep } = e.target
 
     if (!cep) {
+      focusField()
+
       setCep(null)
 
       return
     }
 
+    focusField()
     setCep(cep)
   }
 
@@ -41,20 +54,29 @@ const FormBuscarEndereco = ({ isLoading, setCep }: FormBuscarEnderecoProps) => {
     []
   )
 
-  useEffect(() => {
-    inputRef.current?.focus()
-  }, [])
-
   return (
-    <Input
-      disabled={isLoading}
-      ref={inputRef}
-      focusBorderColor="whatsapp.100"
-      errorBorderColor="red.300"
-      size="lg"
-      onKeyUp={cepForceMask}
-      onChange={debouncedChangeHandler}
-    />
+    <InputGroup>
+      <InputLeftElement
+        h="100%"
+        pointerEvents="none"
+        color={useColorModeValue('gray.500', 'gray.300')}
+        fontSize="1.5em"
+        display="flex"
+        children={<SearchIcon />}
+      />
+      <Input
+        border="2px"
+        borderColor={useColorModeValue('gray.200', 'gray.700')}
+        bg={useColorModeValue('gray.100', 'gray.700')}
+        disabled={isLoading}
+        ref={inputRef}
+        focusBorderColor="whatsapp.200"
+        errorBorderColor="red.300"
+        size="lg"
+        onKeyUp={cepForceMask}
+        onChange={debouncedChangeHandler}
+      />
+    </InputGroup>
   )
 }
 
