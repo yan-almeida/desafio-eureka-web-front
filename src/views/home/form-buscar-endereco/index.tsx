@@ -20,14 +20,12 @@ type DispatchSetState<T> = Dispatch<SetStateAction<T>>
 interface FormBuscarEnderecoProps {
   setCep: DispatchSetState<string | null>
   isLoading: boolean
-  focusField: () => void
   inputRef: RefObject<HTMLInputElement>
 }
 
 const FormBuscarEndereco = ({
   isLoading,
   setCep,
-  focusField,
   inputRef
 }: FormBuscarEnderecoProps) => {
   const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -36,14 +34,11 @@ const FormBuscarEndereco = ({
     const { value: cep } = e.target
 
     if (!cep) {
-      focusField()
-
       setCep(null)
 
       return
     }
 
-    focusField()
     setCep(cep)
   }
 

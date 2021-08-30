@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import { useCallback } from 'react'
 import { useState } from 'react'
 import { buscarEndereco } from '../../api/endereco'
+import { toast } from '../../styles/themes/theme'
 import FormBuscarEndereco from './form-buscar-endereco'
 
 type EnderecoTypes =
@@ -32,10 +33,12 @@ const Home = () => {
 
   const inputRef = useRef<HTMLInputElement>(null)
 
-  const focusField = useCallback(() => {}, [])
+  const focusField = useCallback(() => {
+    inputRef.current?.focus()
+  }, [])
 
   useEffect(() => {
-    inputRef.current?.focus()
+    focusField()
   }, [inputRef, loading])
 
   const handleSearch = useCallback(async (cep: string) => {
@@ -63,12 +66,22 @@ const Home = () => {
     }
   }, [cep])
 
+  useEffect(() => {
+    toast({
+      title: 'Busque um CEP!',
+      description: 'Digite e aguarde 🙌🙌',
+      status: 'success',
+      duration: 2000,
+      isClosable: true,
+      position: 'top-right'
+    })
+  }, [])
+
   return (
     <VStack spacing="2">
       <FormBuscarEndereco
         setCep={setCep}
         isLoading={loading}
-        focusField={focusField}
         inputRef={inputRef}
       />
 
