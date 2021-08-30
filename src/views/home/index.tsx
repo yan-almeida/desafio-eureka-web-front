@@ -32,13 +32,11 @@ const Home = () => {
 
   const inputRef = useRef<HTMLInputElement>(null)
 
-  const focusField = useCallback(() => {
-    inputRef.current?.focus()
-  }, [inputRef])
+  const focusField = useCallback(() => {}, [])
 
   useEffect(() => {
-    focusField()
-  }, [loading])
+    inputRef.current?.focus()
+  }, [inputRef, loading])
 
   const handleSearch = useCallback(async (cep: string) => {
     setLoading(true)

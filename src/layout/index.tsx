@@ -30,12 +30,11 @@ const Layout = ({ children }: WithChildren) => {
         </Heading>
 
         <Box w={isLargerThan1280 ? '65%' : '90%'}>{children}</Box>
+        <ThemeToggleButton
+          checked={colorMode !== 'light'}
+          toggle={toggleColorMode}
+        />
       </Center>
-
-      <ThemeToggleButton
-        checked={colorMode !== 'light'}
-        toggle={toggleColorMode}
-      />
     </Center>
   )
 }
