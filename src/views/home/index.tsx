@@ -71,6 +71,7 @@ const Home = () => {
       title: 'Busque um CEP!',
       description: 'Digite e aguarde 🙌🙌',
       status: 'success',
+      duration: null,
       isClosable: true,
       position: 'top-right'
     })
